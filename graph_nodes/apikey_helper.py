@@ -24,7 +24,7 @@ def get_api_key_from_db() -> str:
     
     # Nếu đã có cache, return luôn
     if _cached_api_key is not None:
-        print(f"✅ Sử dụng cached API key: {_cached_api_key[:5]}****")
+        print(f"✅ Sử dụng cached API key: ****{_cached_api_key[-5:]}")
         return _cached_api_key
     
     # Chưa có cache, lấy từ database
@@ -34,7 +34,7 @@ def get_api_key_from_db() -> str:
             api_key = apikeys[0].get("api_key", "")
             if api_key and api_key.strip():
                 _cached_api_key = api_key
-                print(f"✅ Đã cache API key từ database")
+                print(f"✅ Đã cache API key từ database: ****{_cached_api_key[-5:]}")
                 return _cached_api_key
         
         # Database không có, dùng key mặc định

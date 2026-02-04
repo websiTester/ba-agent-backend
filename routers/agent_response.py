@@ -1,9 +1,6 @@
 import json
 from fastapi import APIRouter
 from pydantic import BaseModel
-from chains.branching_chain import refresh_agent
-from chains.discovery_chain import get_discovery_response
-from chains.ui_ux_chain import get_ui_ux_response
 from graphs.ba_dynamic_graph import get_ba_graph_response, refresh_ba_graph
 from utils.response_processor import parse_and_save_ai_responses
 from mongodb.actions.response_crud import get_all_response_by_phase_id
@@ -19,27 +16,6 @@ class AgentRequest(BaseModel):
     thread_id: str
 
 
-@router.post("/get_response")
-def get_response(request: AgentRequest):
-    input = request.input
-    phase_id = request.phase_id
-    thread_id = request.thread_id
-    result = get_ui_ux_response(input, phase_id, thread_id)
-    return {
-        "message": result
-    }
-
-
-@router.post("/get_discovery_response")
-def get_dis_response(request: AgentRequest):
-    input = request.input
-    phase_id = request.phase_id
-    thread_id = request.thread_id
-    print("=====Input:========"+input)
-    result = get_discovery_response(input, phase_id, thread_id)
-    return {
-        "message": result
-    }
 
 
 @router.post("/get_branching_response")

@@ -171,13 +171,23 @@ def upsert_response(phase_id: str, agent_source: str, response_data: dict):
                     break
             
             if skip_action_processing:
-                # Không xử lý _action, chỉ clean _action field khỏi data
+                # Xóa toàn bộ response cũ và replace với data mới
+                delete_response_by_agent_source(phase_id, agent_source)
+                
+                # Clean _action field khỏi data
                 cleaned_data = []
                 for item in new_data:
                     cleaned_item = {k: v for k, v in item.items() if k != "_action"}
                     cleaned_data.append(cleaned_item)
                 response_data["data"] = cleaned_data
+                
+                print(f"🗑️ Đã xóa response cũ cho agent '{agent_source}'")
                 print(f"📊 Cleaned {len(cleaned_data)} items (xóa _action field)")
+                
+                # Insert fresh data
+                result = collection.insert_one(response_data)
+                print(f"✅ Response replaced with fresh data, ID: {result.inserted_id}")
+                return result
             else:
                 # Không có conflict, tiếp tục xử lý _action bình thường
                 # Danh sách kết quả sau khi xử lý

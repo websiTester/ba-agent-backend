@@ -1,7 +1,6 @@
 import time
 from enum import Enum, StrEnum
-from tkinter import END
-from langgraph.graph import START, StateGraph
+from langgraph.graph import START, END, StateGraph
 from langgraph.types import Command
 from pydantic import Field, create_model
 from graph_nodes.create_agent_node import make_agent_node
@@ -168,7 +167,7 @@ def create_supervisor_node(system_prompt: str, agentObject: any, members: any):
         print(f"State supervisor_node: {state}")
         
         # Số lần thử
-        max_attempts = 3
+        max_attempts = 1
         last_error = None
         current_llm = llm
         
