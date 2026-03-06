@@ -3,13 +3,14 @@ from dotenv import load_dotenv
 from langchain_google_genai  import GoogleGenerativeAIEmbeddings
 from langchain_chroma import Chroma
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-
+from graph_nodes.apikey_helper import get_api_key_from_db
 load_dotenv()
 
 
 def chunk_and_embedding(document: str, source: str, phaseId: str):
     embeddings = GoogleGenerativeAIEmbeddings(
-        model="text-embedding-004"
+        model="text-embedding-004",
+        api_key=get_api_key_from_db()
     )
 
     source = source.replace(" ", "_")

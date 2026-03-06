@@ -30,7 +30,7 @@ COPY requirements.txt .
 
 # Upgrade pip and install Python dependencies
 RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+    pip install -r requirements.txt --retries 5 --timeout 300
 
 # Copy application source code
 COPY . .

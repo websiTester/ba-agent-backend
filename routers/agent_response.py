@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from graphs.ba_dynamic_graph import get_ba_graph_response, refresh_ba_graph
 from utils.response_processor import parse_and_save_ai_responses
-from mongodb.actions.response_crud import get_all_response_by_phase_id
+from mongodb.actions.response_crud import get_all_response_by_phase_id, delete_response_by_agent_source
 
 # Thay vì app = FastAPI(), ta dùng router
 router = APIRouter()
@@ -96,4 +96,39 @@ def get_responses_by_phase(phase_id: str):
         }
 
 
+@router.delete("/delete_response/{phase_id}/{agent_source}")
+def delete_response(phase_id: str, agent_source: str):
+    """
+    Xóa AI response theo phaseId và agent_source
+    
+    Args:
+        phase_id: ID của phase
+        agent_source: Tên agent source cần xóa
         
+    Returns:
+        Kết quả xóa
+    """
+    try:
+        result = delete_response_by_agent_source(phase_id, agent_source)
+        
+        if result.deleted_count > 0:
+            print(f"✅ Deleted response for phase: {phase_id}, agent_source: {agent_source}")
+            return {
+                "success": True,
+                "message": f"Deleted response for {agent_source}",
+                "deleted_count": result.deleted_count
+            }
+        else:
+            print(f"⚠️ No response found for phase: {phase_id}, agent_source: {agent_source}")
+            return {
+                "success": False,
+                "message": f"No response found for {agent_source}",
+                "deleted_count": 0
+            }
+            
+    except Exception as e:
+        print(f"❌ Error deleting response: {e}")
+        return {
+            "success": False,
+            "error": str(e)
+        }

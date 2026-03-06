@@ -40,6 +40,7 @@ from chromadb.api.types import (
     Embeddings,
     Metadatas,
     Documents,
+    ReadLevel,
     Schema,
     URIs,
     Where,
@@ -433,12 +434,22 @@ class SegmentAPI(ServerAPI):
         )
 
     @override
+    def _get_indexing_status(
+        self,
+        collection_id: UUID,
+        tenant: str = DEFAULT_TENANT,
+        database: str = DEFAULT_DATABASE,
+    ) -> "IndexingStatus":
+        raise NotImplementedError("Indexing status is not implemented for SegmentAPI")
+
+    @override
     def _search(
         self,
         collection_id: UUID,
         searches: List[Search],
         tenant: str = DEFAULT_TENANT,
         database: str = DEFAULT_DATABASE,
+        read_level: ReadLevel = ReadLevel.INDEX_AND_WAL,
     ) -> SearchResult:
         raise NotImplementedError("Search is not implemented for SegmentAPI")
 

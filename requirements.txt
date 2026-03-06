@@ -26,17 +26,15 @@ pymongo>=4.6.0
 python-dotenv>=1.0.0
 pandas>=2.0.0
 
-# Google AI
-google-generativeai>=0.3.0
+# Google AI (required by langchain-google-genai)
 google-genai>=0.8.0
 google-api-core>=2.15.0
-
-# HTTP Client
-httpx>=0.25.0
-requests>=2.31.0
 
 # JSON Processing
 json_repair>=0.0.12
 
 # Typing Extensions
 typing_extensions>=4.5.0
+
+# Graph Visualization (required for langgraph ASCII display)
+grandalf>=0.8
